@@ -43,10 +43,12 @@ C:> py -m ensurepip --upgrade
 ```
 
 ### Installing Dependences:
-This project requries external libraries that do not come preinstalled with python. Included in this repository is a requirements.txt file that will help install the required packages. To simplify things, it is recommended to use a virtual enviroment. In a terminal, please run the following(they work on all systems):
+First, you need to download the entire project from github. This can be done by entering the following in terminal:
 ```shell
-$ virtualenv --no-site-packages venv
-$ source venv/bin/activate
+$ git clone https://github.com/rabernethy/slfLocateCleaningTool.git
+```
+Then navigate to that folder and open a terminal there and download the dependencies by running the following command:
+```shell
 $ pip install -r requirements.txt
 ```
 

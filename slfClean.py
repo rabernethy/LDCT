@@ -17,10 +17,12 @@ driver = None
 seachbox = '//*[@id="searchboxinput"]'
 filename = ''
 
-def open_csv():
+def open_csv(): # opens file explorer to load csv
+
     global filename
-    filename = filedialog.askopenfilename()
-    if filename != '':
+
+    filename = filedialog.askopenfilename()     # open file explorer
+    if filename != '':                          # 
         on_open()
     else:
         print('error opening csv')
