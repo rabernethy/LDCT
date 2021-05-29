@@ -1,26 +1,6 @@
-""" 
-    slfClean.py 
-    Author: Russell Abernethy
-    Date: 05/27/2021
-"""
-
-"""
-PROGRAM DESCRIPTION:
-    This program takes in a csv file that contains location information about a
-    certin type of business and helps the user process out undesired entries.
-    Once all of the entries have been processed, the program will output 2 csvs:    
-    one will be a csv with a few additional columns (newLat, newLong, changes, 
-    errors, & notes). The other outputed csv will have the same headers as the 
-    inputed csv, the difference is that it has all of the invalid rows removed
-    and all of the latitudes and longitudes with corrections have been adjusted.
-
-"""
-
-"""
-usage: 
-    
-    python3 slfClean.py 'name of csv you want to clean'
-"""
+# slfClean.py 
+# Author: Russell Abernethy
+# Date: 05/27/2021
 
 
 import sys
@@ -52,11 +32,9 @@ def on_close(): #closes program
     global driver
 
     if driver:
-        driver.close()
-        driver = None
-
-        produce_csv()
-        quit()
+        driver.close()  # close the webbrowser
+        produce_csv()   # create csv output files
+        quit()          # quit the program
 
 
 def loc_correct(): # correct location button logic
@@ -96,15 +74,15 @@ def next_loc(): # advances the browser to the next entry.
 
 def produce_csv(): # produces the output csv
     
-    headers = ['Business Name', 'Full Address', 'Latitude', 'Longitude', 'NewLatitude', 'NewLongitude', 'Notes']
     global out_data
 
     # Create csv that contains all the entires and any additions made during anlysis.
     with open(filename[:-4]+'(2).csv','w',newline='') as outcsv:
+        headers = ['Business Name', 'Full Address', 'Latitude', 'Longitude', 'NewLatitude', 'NewLongitude', 'Notes']
         writer = csv.DictWriter(outcsv,fieldnames=headers)
         writer.writeheader()
-        for data in out_data:
-            note = data.pop()
+        for data in out_data:   # retrive data from out_data and 
+            note = data.pop()   # prepare for csv format
             nlon = data.pop()
             nlat = data.pop()
             lon = data.pop()
@@ -128,10 +106,10 @@ def produce_csv(): # produces the output csv
 def load_input_csv(filename): # reads in csv and places data into a list
     
     global in_data
-    rowc = 0
 
     with open(filename,'r',newline='\n') as f:
         reader = csv.DictReader(f)
+        rowc = 0
         for row in reader:
             if rowc == 0: #skip the header
                 rowc = 1
@@ -144,36 +122,27 @@ def wrongCategory(): # marks entry as wrong category
     global out_data
 
     temp = out_data.pop()
-    #no lat or long
+    temp.append("")         #no lat or long
     temp.append("")
-    temp.append("")
-    #add note for why not included
     temp.append("{notes}".format(notes='Does_not_fall_within_search_category'))
     out_data.append(temp)
     next_loc()
 
-# Load in all the entires from the input csv
-load_input_csv(filename)
-# Create the widget box
-root  = tk.Tk()
-# Website to go to
+
+load_input_csv(filename)                                                        # Load in all the entires from the input csv
+root  = tk.Tk()                                                                 # Create the widget box
 e = tk.Entry(root)
 e.pack()
 e.insert('end', 'https://www.google.com/maps/')
-# Start Button
-b = tk.Button(root, text='Start', command=on_open)
+b = tk.Button(root, text='Start', command=on_open)                              # Start Button
 b.pack()
-# Quit Button
-b = tk.Button(root, text='Quit', command=on_close)
+b = tk.Button(root, text='Quit', command=on_close)                              # Quit Button
 b.pack()
-# Correct / correct w/ adjustments button
-b = tk.Button(root, text = 'Location is at: ', command=loc_correct)
+b = tk.Button(root, text = 'Location is at: ', command=loc_correct)             # Correct / correct w/ adjustments button
 b.pack()
-# Text entry for geo cords
-geol = tk.Entry(root)
+geol = tk.Entry(root)                                                           # Text entry for geo cords
 geol.pack()
-# not in category
-b = tk.Button(root, text='Does Not Fall Into Category.', command=wrongCategory)
+b = tk.Button(root, text='Does Not Fall Into Category.', command=wrongCategory) # not in category
 b.pack()
 
 root.mainloop()
