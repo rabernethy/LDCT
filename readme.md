@@ -61,11 +61,11 @@ To run the program, the csv you want to clean needs to be in the slfLocateCleani
 
 #### MacOS & Linux
 ```shell
-$ python slfClean.py <name of csv file here>
+$ python slfClean.py
 ```
 
 #### Windows
 ```powershell
-C:> py slfClean.py <name of csv file here>
+C:> py slfClean.py
 ```
 
