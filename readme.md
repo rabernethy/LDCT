@@ -57,15 +57,13 @@ To be able to interact with a web browser, we need to download an extra driver. 
 To be able to interact with a web browser, we need to download an extra driver. Go to the geckodriver [download](https://github.com/mozilla/geckodriver/releases) page and download the correct version for your system. Once you've downloaded the zipfile, unzip it and place the exe somewhere (Downloads is perfectly fine). Now open up terminal and run sudo nano /etc/paths and enter your password. Go to the bottom of this file and type in the path of the exe file (an easy way to get this is to go to finder, make sure the exe is highlighted, then hit option+command+c and the path of the exe will now be copied to your clipboard). Now close nano by pressing control+x, y to save, and return to confirm.
 
 ## How to run:
-To run the program, the csv you want to clean needs to be in the slfLocateCleaningTool folder. Once you have it in the right place, you can start the program with:
-
 #### MacOS & Linux
 ```shell
-$ python slfClean.py <name of csv file here>
+$ python slfClean.py
 ```
 
 #### Windows
 ```powershell
-C:> py slfClean.py <name of csv file here>
+C:> py slfClean.py
 ```
 
