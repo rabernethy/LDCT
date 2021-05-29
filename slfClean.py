@@ -22,9 +22,9 @@ def on_open(): # starts cleaner
     global driver
 
     if not driver:
-        driver = selenium.webdriver.Firefox()
-        driver.get('https://www.google.com/maps/')
-        next_loc()
+        driver = selenium.webdriver.Firefox()       # start webbrowser
+        driver.get('https://www.google.com/maps/')  # go to google maps
+        next_loc()                                  # load in the first location
 
 
 def on_close(): #closes program
@@ -41,14 +41,14 @@ def loc_correct(): # correct location button logic
 
     global out_data
 
-    if geol.get() != '': # user entered new cords.
-        temp = out_data.pop()
+    if geol.get() != '':                # user entered new cords.
+        data = out_data.pop()
         geo = geol.get().split(',')
         lon = geo.pop()
-        temp.append(geo.pop())
-        temp.append(lon)
-        temp.append("")
-        out_data.append(temp)
+        data.append(geo.pop())
+        data.append(lon)
+        data.append("")
+        out_data.append(data)
         next_loc()
 
     
