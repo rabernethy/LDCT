@@ -1,5 +1,5 @@
 # slfClean.py
-![dashexample](/img/dashboardpic.png)
+![dashexample](/img/pic2.png)
 ## Requirements and How to install:
 
 ### Installing Git:

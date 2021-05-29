@@ -5,23 +5,34 @@
 
 import sys
 import tkinter as tk
+from tkinter import filedialog
 import selenium.webdriver
 from selenium.webdriver.common.keys import Keys
 import csv
-
+import subprocess
 
 in_data = []
 out_data = []
 driver = None
 seachbox = '//*[@id="searchboxinput"]'
-filename = sys.argv[1]
+filename = ''
+
+def open_csv():
+    global filename
+    filename = filedialog.askopenfilename()
+    if filename != '':
+        on_open()
+    else:
+        print('error opening csv')
 
 
 def on_open(): # starts cleaner
 
     global driver
+    global filename
 
     if not driver:
+        load_input_csv(filename)                    # load in all the entires from the input csv
         driver = selenium.webdriver.Firefox()       # start webbrowser
         driver.get('https://www.google.com/maps/')  # go to google maps
         next_loc()                                  # load in the first location
@@ -129,20 +140,16 @@ def wrongCategory(): # marks entry as wrong category
     next_loc()
 
 
-load_input_csv(filename)                                                        # Load in all the entires from the input csv
 root  = tk.Tk()                                                                 # Create the widget box
-e = tk.Entry(root)
+root.title('slfLocate Data Cleaning Tool')
+e = tk.Button(root, text='Open csv file', command=open_csv)                     # Open csv button
 e.pack()
-e.insert('end', 'https://www.google.com/maps/')
-b = tk.Button(root, text='Start', command=on_open)                              # Start Button
-b.pack()
 b = tk.Button(root, text='Quit', command=on_close)                              # Quit Button
+b.pack()
+b = tk.Button(root, text='Does Not Fall Into Category.', command=wrongCategory) # not in category
 b.pack()
 b = tk.Button(root, text = 'Location is at: ', command=loc_correct)             # Correct / correct w/ adjustments button
 b.pack()
 geol = tk.Entry(root)                                                           # Text entry for geo cords
 geol.pack()
-b = tk.Button(root, text='Does Not Fall Into Category.', command=wrongCategory) # not in category
-b.pack()
-
 root.mainloop()
