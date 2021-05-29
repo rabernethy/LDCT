@@ -1,5 +1,5 @@
 geckodriver.log
-.csv
+*.csv
 .Python
 [Bb]in
 [Ii]nclude
