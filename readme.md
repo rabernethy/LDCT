@@ -7,6 +7,7 @@ Git is a version manager for code development. It is also a useful tool for dist
 
 #### MacOS:
 Homebrew is a tool used to install pacakages on your computer, install it to install git.
+Open up terminal and enter:
 ```shell
 $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
@@ -38,6 +39,7 @@ $ python -m ensurepip --upgrade
 ```
 
 #### Windows
+Open up the cmd promt and enter:
 ```powershell
 C:> py -m ensurepip --upgrade
 ```
@@ -49,23 +51,22 @@ $ git clone https://github.com/rabernethy/slfLocateCleaningTool.git
 ```
 Then navigate to that folder and open a terminal there and download the dependencies by running the following command:
 ```shell
+$ cd slfLocateCleaningTool/
 $ pip install -r requirements.txt
 ```
 
 ### Installing GeckoDriver:
 #### Windows 
-To be able to interact with a web browser, we need to download an extra driver. Go to the geckodriver [download](https://github.com/mozilla/geckodriver/releases) page and download the correct version for your system. Once you've downloaded the zipfile, unzip it and copy the .exe file into your python parent directory (e.g. C:\\Python34)
+To be able to interact with a web browser, we need to download an extra driver. Go to the geckodriver [download](https://github.com/mozilla/geckodriver/releases) page and download the correct version for your system. Once you've downloaded the zipfile, unzip it and copy the .exe file into your python parent directory (e.g. C:\\Python39). The best way I've found to get here is to open file explorer and search for Python39 in your C drive and wait until it finds it.
 #### MacOS
 To be able to interact with a web browser, we need to download an extra driver. Go to the geckodriver [download](https://github.com/mozilla/geckodriver/releases) page and download the correct version for your system. Once you've downloaded the zipfile, unzip it and place the exe somewhere (Downloads is perfectly fine). Now open up terminal and run sudo nano /etc/paths and enter your password. Go to the bottom of this file and type in the path of the exe file (an easy way to get this is to go to finder, make sure the exe is highlighted, then hit option+command+c and the path of the exe will now be copied to your clipboard). Now close nano by pressing control+x, y to save, and return to confirm.
 
 ## How to run:
 #### MacOS & Linux
-```shell
+Open terminal at the slfLocateCleaningTool folder(right click and select New Terminal at Folder) and enter
+``` shell
 $ python slfClean.py
 ```
 
 #### Windows
-```powershell
-C:> py slfClean.py
-```
-
+Double click on the slfClean file to run.
