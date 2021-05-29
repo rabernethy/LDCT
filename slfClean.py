@@ -17,96 +17,86 @@ driver = None
 seachbox = '//*[@id="searchboxinput"]'
 filename = ''
 
-def open_csv(): # opens file explorer to load csv
 
+def open_csv(): 
+# Opens file explorer to load csv file.
     global filename
+    filename = filedialog.askopenfilename()                                     # Open file explorer.
+    if filename != '':                                                          # If a file was selected start open it and 
+        on_open()                                                               # the browser.
+    else:                                                                       # Otherwise print an error to screen.
+        print('error opening csv, try again')
 
-    filename = filedialog.askopenfilename()     # open file explorer
-    if filename != '':                          # 
-        on_open()
-    else:
-        print('error opening csv')
 
-
-def on_open(): # starts cleaner
-
+def on_open(): 
+# Opens webbrowser and starts the cleaning tool.
     global driver
     global filename
-
     if not driver:
-        load_input_csv(filename)                    # load in all the entires from the input csv
-        driver = selenium.webdriver.Firefox()       # start webbrowser
-        driver.get('https://www.google.com/maps/')  # go to google maps
-        next_loc()                                  # load in the first location
+        load_input_csv(filename)                                                # Load in all the entires from the input csv.
+        driver = selenium.webdriver.Firefox()                                   # Start the webbrowser.
+        driver.get('https://www.google.com/maps/')                              # Go to google maps.
+        next_loc()                                                              # Load in the first location.
 
 
-def on_close(): #closes program
-
+def on_close(): 
+# Closes the program.
     global driver
+    if driver:                                                                  # If the program has already started to run:
+        driver.close()                                                          # Close the webbrowser.
+        produce_csv()                                                           # Create csv output files.
+        quit()                                                                  # Quit the program.
 
-    if driver:
-        driver.close()  # close the webbrowser
-        produce_csv()   # create csv output files
-        quit()          # quit the program
 
-
-def loc_correct(): # correct location button logic
-
+def loc_correct():
+# Handles event where the location was correct.
     global out_data
 
-    if geol.get() != '':                # user entered new cords.
-        data = out_data.pop()
-        geo = geol.get().split(',')
-        lon = geo.pop()
-        data.append(geo.pop())
-        data.append(lon)
-        data.append("")
-        out_data.append(data)
-        next_loc()
+    if geol.get() != '':                                                        # User entered new cords. Save it and go to next location.
+        data = out_data.pop()                                                   # No need to explain this code so I'll put ASCII here.
+        geo = geol.get().split(',')                                             # ░▄▄▄▄░
+        lon = geo.pop()                                                         # ▀▀▄██►
+        data.append(geo.pop())                                                  # ▀▀███►
+        data.append(lon)                                                        # ░▀███►░█►
+        data.append("")                                                         # ▒▄████▀▀
+        out_data.append(data)                                                   # This is Frank the dino, he likes hot sause and doing
+        next_loc()                                                              # crossword puzzles in red ink (he's crazy!)
 
     
-def next_loc(): # advances the browser to the next entry.
-    
+def next_loc():
+# Advances the browser to the next entry.
     global in_data
     global out_data
     global driver
     global seachbox
-
-    try: # if there are more locations to check, do so.
+    try:                                                                        # If there are more locations to check, do so.
         new_loc = in_data.pop()
         out_data.append(new_loc)
-
-    except IndexError: # no more places to check, wrap up the program
-        produce_csv()
-        on_close()
-
-    # clear seachbox and go to next place to check.
-    driver.find_element_by_xpath(seachbox).clear()
+    except IndexError:                                                          # No more places to check, wrap up the program.
+        produce_csv()                                                           # Create 2 csvs.
+        on_close()                                                              # Call in the cleanup team.
+    driver.find_element_by_xpath(seachbox).clear()                              # Clear seachbox and go to next place to check.
     driver.find_element_by_xpath(seachbox).send_keys(str(new_loc) + Keys.ENTER)
     
 
-def produce_csv(): # produces the output csv
-    
+def produce_csv(): 
+# Produces the output csv
     global out_data
-
-    # Create csv that contains all the entires and any additions made during anlysis.
-    with open(filename[:-4]+'(2).csv','w',newline='') as outcsv:
+    with open(filename[:-4]+'(2).csv','w',newline='') as outcsv:                # Creates detailed report csv. Boring Code.
         headers = ['Business Name', 'Full Address', 'Latitude', 'Longitude', 'NewLatitude', 'NewLongitude', 'Notes']
-        writer = csv.DictWriter(outcsv,fieldnames=headers)
-        writer.writeheader()
-        for data in out_data:   # retrive data from out_data and 
-            note = data.pop()   # prepare for csv format
-            nlon = data.pop()
-            nlat = data.pop()
-            lon = data.pop()
-            lat = data.pop()
-            fulladr = data.pop()
-            bisname = data.pop()
+        writer = csv.DictWriter(outcsv,fieldnames=headers)                      # ──────▄▀▄─────▄▀▄         - Jerry the -
+        writer.writeheader()                                                    # ─────▄█░░▀▀▀▀▀░░█▄        watchful cat!
+        for data in out_data:                                                   # ─▄▄──█░░░░░░░░░░░█──▄▄
+            note = data.pop()                                                   # █▄▄█─█░░▀░░┬░░▀░░█─█▄▄█
+            nlon = data.pop()                                                   
+            nlat = data.pop()                                                   # ───▄██▄─██▄───▄           - Joe Camel -                                             
+            lon = data.pop()                                                    # ─▄██████████▄███▄
+            lat = data.pop()                                                    # ─▌████████████▌
+            fulladr = data.pop()                                                # ▐▐█░█▌░▀████▀░░
+            bisname = data.pop()                                                # ░▐▄▐▄░░░▐▄▐▄░░░░
             writer.writerow({'Business Name':bisname, 'Full Address': fulladr, 'Latitude':lon, 'Longitude':lat, 'NewLatitude': nlat, 'NewLongitude': nlon, 'Notes': note})
-
-    # Create final csv that only has valid locations included.
-    with open(filename[:-4]+'(2).csv','r',newline='') as csv2:
-        reader = csv.DictReader(csv2)
+    with open(filename[:-4]+'(2).csv','r',newline='') as csv2:                  # Create final csv that only has valid 
+        reader = csv.DictReader(csv2)                                           # locations included.
         with open(filename[:-4]+'(3).csv','w',newline='') as csv3:
             headers=["Business Name", "Full Address", "Latitude", "Longitude"]
             writer = csv.DictWriter(csv3,fieldnames=headers)
@@ -116,42 +106,40 @@ def produce_csv(): # produces the output csv
                     writer.writerow({'Business Name': row['Business Name'], 'Full Address': row['Full Address'], 'Latitude': row['NewLatitude'], 'Longitude': row['NewLongitude']})
 
 
-def load_input_csv(filename): # reads in csv and places data into a list
-    
+def load_input_csv(filename): 
+# Reads in csv and places data into a list.
     global in_data
-
     with open(filename,'r',newline='\n') as f:
         reader = csv.DictReader(f)
         rowc = 0
         for row in reader:
-            if rowc == 0: #skip the header
-                rowc = 1
+            if rowc == 0:                                                       # Skip the header, but read in everyother row to
+                rowc = 1                                                        # memory so that it can be processed.
                 continue
             in_data.append([row['Business Name'],row['Full Address'], row['Latitude'],row['Longitude']])
 
 
-def wrongCategory(): # marks entry as wrong category
-    
+def wrongCategory(): 
+# Handles the event where location is not in the right category.
     global out_data
-
     temp = out_data.pop()
-    temp.append("")         #no lat or long
-    temp.append("")
+    temp.append("")                                                             # No lat or long included since we don't really care
+    temp.append("")                                                             # if it's there or not.
     temp.append("{notes}".format(notes='Does_not_fall_within_search_category'))
     out_data.append(temp)
-    next_loc()
+    next_loc()                                          
 
 
-root  = tk.Tk()                                                                 # Create the widget box
+root  = tk.Tk()                                                                 # Create the widget box.
 root.title('slfLocate Data Cleaning Tool')
-e = tk.Button(root, text='Open csv file', command=open_csv)                     # Open csv button
+e = tk.Button(root, text='Open csv file', command=open_csv)                     # Open csv button.
 e.pack()
-b = tk.Button(root, text='Quit', command=on_close)                              # Quit Button
+b = tk.Button(root, text='Quit', command=on_close)                              # Quit button.
 b.pack()
-b = tk.Button(root, text='Does Not Fall Into Category.', command=wrongCategory) # not in category
+b = tk.Button(root, text='Does Not Fall Into Category.', command=wrongCategory) # Not in category button.
 b.pack()
-b = tk.Button(root, text = 'Location is at: ', command=loc_correct)             # Correct / correct w/ adjustments button
+b = tk.Button(root, text = 'Location is at: ', command=loc_correct)             # Correct button.
 b.pack()
-geol = tk.Entry(root)                                                           # Text entry for geo cords
+geol = tk.Entry(root)                                                           # Text entry for geo cords.
 geol.pack()
 root.mainloop()
