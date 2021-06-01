@@ -16,7 +16,8 @@ out_data = []
 driver = None
 seachbox = '//*[@id="searchboxinput"]'
 filename = ''
-
+entries = 0
+progress = 0
 
 def open_csv(): 
 # Opens file explorer to load csv file.
@@ -51,7 +52,6 @@ def on_close():
 def loc_correct():
 # Handles event where the location was correct.
     global out_data
-
     if geol.get() != '':                                                        # User entered new cords. Save it and go to next location.
         data = out_data.pop()                                                   # No need to explain this code so I'll put ASCII here.
         geo = geol.get().split(',')                                             # ░▄▄▄▄░
@@ -70,6 +70,12 @@ def next_loc():
     global out_data
     global driver
     global seachbox
+    global entries
+    global progress
+    progress += 1
+    pbar.delete(1.0,'end')
+
+    pbar.insert(3.0,'Progress : {progress}/{entries}'.format(progress=progress,entries=entries))
     try:                                                                        # If there are more locations to check, do so.
         new_loc = in_data.pop()
         out_data.append(new_loc)
@@ -77,7 +83,8 @@ def next_loc():
         produce_csv()                                                           # Create 2 csvs.
         on_close()                                                              # Call in the cleanup team.
     driver.find_element_by_xpath(seachbox).clear()                              # Clear seachbox and go to next place to check.
-    driver.find_element_by_xpath(seachbox).send_keys(new_loc[0] + " " + new_loc[1] + Keys.ENTER)
+    driver.find_element_by_xpath(seachbox).send_keys( new_loc[1] + Keys.ENTER)
+    pbar.insert(1.0,new_loc[0] + " " + new_loc[1] + "\n" + new_loc[2] + " " + new_loc[3]+ "\n")
     
 
 def produce_csv(): 
@@ -110,15 +117,16 @@ def produce_csv():
 def load_input_csv(filename): 
 # Reads in csv and places data into a list.
     global in_data
+    global progress
+    global entries
     with open(filename,'r',newline='\n') as f:
         reader = csv.DictReader(f)
-        rowc = 0
         for row in reader:
-            if rowc == 0:                                                       # Skip the header, but read in everyother row to
-                rowc = 1                                                        # memory so that it can be processed.
+            if entries == 0:                                                       # Skip the header, but read in everyother row to
+                entries += 1                                                       # memory so that it can be processed.
                 continue
+            entries += 1
             in_data.append([row['Business Name'],row['Full Address'], row['Latitude'],row['Longitude']])
-
 
 def wrongCategory(): 
 # Handles the event where location is not in the right category.
@@ -143,4 +151,6 @@ b = tk.Button(root, text = 'Location is at: ', bg='green',command=loc_correct)  
 b.pack()
 geol = tk.Entry(root)                                                           # Text entry for geo cords.
 geol.pack()
+pbar = tk.Text(root)                                                            # Progress bar text.
+pbar.pack()
 root.mainloop()
