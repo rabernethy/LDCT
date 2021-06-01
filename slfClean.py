@@ -112,7 +112,7 @@ def produce_csv():
             for row in reader:
                 if row['NewLatitude'] != '':
                     writer.writerow({'Business Name': row['Business Name'], 'Full Address': row['Full Address'], 'Latitude': row['NewLatitude'], 'Longitude': row['NewLongitude']})
-
+    exit()
 
 def load_input_csv(filename): 
 # Reads in csv and places data into a list.
