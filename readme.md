@@ -70,3 +70,10 @@ $ python slfClean.py
 
 #### **Windows**
 Double click on the slfClean file to run.
+
+## Downloading Updates:
+The plan is to keep this program is to add requested features. This means that new versions of the code will be pushed out that you should download. How this is done is using git. To downoald updates, run:
+```shell
+$ git fetch https://github.com/rabernethy/slfLocateCleaningTool.git
+```
+I would suggest doing this every week until changes are finished being made.
