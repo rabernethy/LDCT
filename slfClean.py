@@ -77,7 +77,7 @@ def next_loc():
         produce_csv()                                                           # Create 2 csvs.
         on_close()                                                              # Call in the cleanup team.
     driver.find_element_by_xpath(seachbox).clear()                              # Clear seachbox and go to next place to check.
-    driver.find_element_by_xpath(seachbox).send_keys(str(new_loc) + Keys.ENTER)
+    driver.find_element_by_xpath(seachbox).send_keys(new_loc[0] + " " + new_loc[1] + Keys.ENTER)
     
 
 def produce_csv(): 
