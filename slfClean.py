@@ -60,6 +60,7 @@ def loc_correct():
         data.append(lon)                                                        # ░▀███►░█►
         data.append("")                                                         # ▒▄████▀▀
         out_data.append(data)                                                   # This is Frank the dino, he likes hot sause and doing
+        geol.delete(0,len(geol.get()))
         next_loc()                                                              # crossword puzzles in red ink (he's crazy!)
 
     
@@ -136,9 +137,9 @@ e = tk.Button(root, text='Open csv file', command=open_csv)                     
 e.pack()
 b = tk.Button(root, text='Quit', command=on_close)                              # Quit button.
 b.pack()
-b = tk.Button(root, text='Does Not Fall Into Category.', command=wrongCategory) # Not in category button.
-b.pack()
-b = tk.Button(root, text = 'Location is at: ', command=loc_correct)             # Correct button.
+b = tk.Button(root, text='Does Not Fall Into Category.', command=wrongCategory, bg = 'red') 
+b.pack()                                                                        # Not in category button.
+b = tk.Button(root, text = 'Location is at: ', bg='green',command=loc_correct)  # Correct button.
 b.pack()
 geol = tk.Entry(root)                                                           # Text entry for geo cords.
 geol.pack()
