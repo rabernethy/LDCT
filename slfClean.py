@@ -128,7 +128,7 @@ def load_input_csv(filename):
             entries += 1
             in_data.append([row['Business Name'],row['Full Address'], row['Latitude'],row['Longitude']])
 
-def wrongCategory(): 
+def wrong_category(): 
 # Handles the event where location is not in the right category.
     global out_data
     temp = out_data.pop()
@@ -145,7 +145,7 @@ e = tk.Button(root, text='Open csv file', command=open_csv)                     
 e.pack()
 b = tk.Button(root, text='Quit', command=on_close)                              # Quit button.
 b.pack()
-b = tk.Button(root, text='Does Not Fall Into Category.', command=wrongCategory, bg = 'red') 
+b = tk.Button(root, text='Does Not Fall Into Category.', command=wrong_category, bg = 'red') 
 b.pack()                                                                        # Not in category button.
 b = tk.Button(root, text = 'Location is at: ', bg='green',command=loc_correct)  # Correct button.
 b.pack()
