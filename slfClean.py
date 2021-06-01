@@ -46,7 +46,7 @@ def on_close():
     if driver:                                                                  # If the program has already started to run:
         driver.close()                                                          # Close the webbrowser.
         produce_csv()                                                           # Create csv output files.
-        quit()                                                                  # Quit the program.
+
 
 
 def loc_correct():
@@ -90,6 +90,7 @@ def next_loc():
 def produce_csv(): 
 # Produces the output csv
     global out_data
+    global driver
     with open(filename[:-4]+'(2).csv','w',newline='') as outcsv:                # Creates detailed report csv. Boring Code.
         headers = ['Business Name', 'Full Address', 'Latitude', 'Longitude', 'NewLatitude', 'NewLongitude', 'Notes']
         writer = csv.DictWriter(outcsv,fieldnames=headers)                      # ──────▄▀▄─────▄▀▄         - Jerry the -
@@ -112,6 +113,7 @@ def produce_csv():
             for row in reader:
                 if row['NewLatitude'] != '':
                     writer.writerow({'Business Name': row['Business Name'], 'Full Address': row['Full Address'], 'Latitude': row['NewLatitude'], 'Longitude': row['NewLongitude']})
+    driver.close()
     exit()
 
 def load_input_csv(filename): 
