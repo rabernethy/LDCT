@@ -126,7 +126,7 @@ def load_input_csv(filename):
         
         for row in reader:
             entries += 1
-            in_data.append([row['Business Name'],row['Full Address'], row['Latitude'],row['Longitude']])
+            in_data.append([row['Business Name'],row['Full Address'].replace("Â",""), row['Latitude'],row['Longitude']])
 
 def wrong_category(): 
 # Handles the event where location is not in the right category.
