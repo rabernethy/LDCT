@@ -123,10 +123,8 @@ def load_input_csv(filename):
     global entries
     with open(filename,'r',newline='\n') as f:
         reader = csv.DictReader(f)
+        
         for row in reader:
-            if entries == 0:                                                       # Skip the header, but read in everyother row to
-                entries += 1                                                       # memory so that it can be processed.
-                continue
             entries += 1
             in_data.append([row['Business Name'],row['Full Address'], row['Latitude'],row['Longitude']])
 
