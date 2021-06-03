@@ -121,12 +121,15 @@ def load_input_csv(filename):
     global in_data
     global progress
     global entries
-    with open(filename,'r',newline='\n') as f:
+    with open(filename,'r',newline='\n',encoding='utf-8-sig') as f:
         reader = csv.DictReader(f)
         
         for row in reader:
             entries += 1
-            in_data.append([row['Business Name'],row['Full Address'].replace("Â",""), row['Latitude'],row['Longitude']])
+            in_data.append([row['Business Name'],row['Full Address'].replace("\xa0",""), row['Latitude'],row['Longitude']])
+        for data in in_data:
+            print(data)
+            print('\n')
 
 def wrong_category(): 
 # Handles the event where location is not in the right category.
