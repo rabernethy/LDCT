@@ -35,7 +35,7 @@ Pip is a tool for downloading code packages that normally comes preinstalled wit
 
 #### **MacOS & Linux**
 ```shell
-$ python -m ensurepip --upgrade
+$ python3 -m ensurepip --upgrade
 ```
 
 #### **Windows**
@@ -52,7 +52,7 @@ $ git clone https://github.com/rabernethy/slfLocateCleaningTool.git
 Then navigate to that folder and open a terminal there and download the dependencies by running the following command:
 ```shell
 $ cd slfLocateCleaningTool/
-$ pip install -r requirements.txt
+$ pip3 install -r requirements.txt
 ```
 
 ### Installing GeckoDriver:
@@ -65,7 +65,7 @@ To be able to interact with a web browser, we need to download an extra driver. 
 #### **MacOS & Linux**
 Open terminal at the slfLocateCleaningTool folder(right click and select New Terminal at Folder) and enter
 ``` shell
-$ python slfClean.py
+$ python3 slfClean.py
 ```
 
 #### **Windows**
