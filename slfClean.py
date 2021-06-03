@@ -133,12 +133,13 @@ def load_input_csv(filename):
 def wrong_category(): 
 # Handles the event where location is not in the right category.
     global out_data
-    temp = out_data.pop()
-    temp.append("")                                                             # No lat or long included since we don't really care
-    temp.append("")                                                             # if it's there or not.
-    temp.append("{notes}".format(notes='Does_not_fall_within_search_category'))
-    out_data.append(temp)
-    next_loc()                                          
+    if geol.get() == '':
+        temp = out_data.pop()
+        temp.append("")                                                             # No lat or long included since we don't really care
+        temp.append("")                                                             # if it's there or not.
+        temp.append("{notes}".format(notes='Does_not_fall_within_search_category'))
+        out_data.append(temp)
+        next_loc()                                          
 
 
 root  = tk.Tk()                                                                 # Create the widget box.
