@@ -129,9 +129,6 @@ def load_input_csv(filename):
             entries += 1
             in_data.append([row['Business Name'],unicodedata.normalize("NFKD",row['Full Address']), row['Latitude'],row['Longitude']])
 
-        for data in in_data:
-            print(data)
-
 def wrong_category(): 
 # Handles the event where location is not in the right category.
     global out_data
