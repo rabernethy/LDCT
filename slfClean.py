@@ -82,7 +82,6 @@ def next_loc():
     pbar.insert(3.0,'Progress : {progress}/{entries}'.format(progress=progress,entries=entries))
     try:                                                                        # If there are more locations to check, do so.
         new_loc = in_data.pop()
-        print(new_loc)
         out_data.append(new_loc)
     except IndexError:                                                          # No more places to check, wrap up the program.
         produce_csv()                                                           # Create 2 csvs.
@@ -132,9 +131,7 @@ def load_input_csv(filename):
         for row in reader:
             entries += 1
             in_data.append([remove_non_ascii(row['Business Name']),remove_non_ascii(row['Full Address']),remove_non_ascii(row['Latitude']),remove_non_ascii(row['Longitude'])])
-        
-        for e in in_data:
-            print(e)
+
 def wrong_category(): 
 # Handles the event where location is not in the right category.
     global out_data
