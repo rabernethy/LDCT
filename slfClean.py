@@ -2,7 +2,7 @@
 # Author: Russell Abernethy
 # Date: 05/27/2021
 
-
+import pyperclip
 import sys
 import tkinter as tk
 from tkinter import filedialog
@@ -140,19 +140,30 @@ def wrong_category():
         out_data.append(temp)
         next_loc()                                          
 
+def paste():
+# Button for pasting from the clipboard.
+    if pyperclip.paste() != '':
+        geol.insert(0,pyperclip.paste())
 
+# Widget Creation
 root  = tk.Tk()                                                                 # Create the widget box.
 root.title('slfLocate Data Cleaning Tool')
-e = tk.Button(root, text='Open csv file', command=open_csv)                     # Open csv button.
-e.pack()
-b = tk.Button(root, text='Quit', command=on_close)                              # Quit button.
-b.pack()
+top=tk.Frame(root)
+top.pack()
+e = tk.Button(top, text='Open csv file', command=open_csv)                     # Open csv button.
+e.pack(side=tk.LEFT)
+b = tk.Button(top, text='Quit', command=on_close)                              # Quit button.
+b.pack(side=tk.LEFT)
 b = tk.Button(root, text='Does Not Fall Into Category.', command=wrong_category, bg = 'red') 
 b.pack()                                                                        # Not in category button.
 b = tk.Button(root, text = 'Location is at: ', bg='green',command=loc_correct)  # Correct button.
 b.pack()
-geol = tk.Entry(root)                                                           # Text entry for geo cords.
-geol.pack()
+search = tk.Frame(root)
+search.pack()
+geol = tk.Entry(search)                                                           # Text entry for geo cords.
+geol.pack(side=tk.LEFT)
+p = tk.Button(search, text='Paste',command=paste)
+p.pack(side=tk.LEFT)
 pbar = tk.Text(root)                                                            # Progress bar text.
 pbar.pack()
 root.mainloop()
