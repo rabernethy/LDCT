@@ -20,6 +20,9 @@ filename = ''
 entries = 0
 progress = 0
 
+def remove_non_ascii(s):
+    return "".join(c for c in s if ord(c)<128)
+
 def open_csv(): 
 # Opens file explorer to load csv file.
     global filename
@@ -79,13 +82,14 @@ def next_loc():
     pbar.insert(3.0,'Progress : {progress}/{entries}'.format(progress=progress,entries=entries))
     try:                                                                        # If there are more locations to check, do so.
         new_loc = in_data.pop()
+        print(new_loc)
         out_data.append(new_loc)
     except IndexError:                                                          # No more places to check, wrap up the program.
         produce_csv()                                                           # Create 2 csvs.
         on_close()                                                              # Call in the cleanup team.
     driver.find_element_by_xpath(seachbox).clear()                              # Clear seachbox and go to next place to check.
     driver.find_element_by_xpath(seachbox).send_keys( new_loc[1] + Keys.ENTER)
-    pbar.insert(1.0,new_loc[0] + " " + new_loc[1] + "\n" + new_loc[2] + " " + new_loc[3]+ "\n")
+    pbar.insert(1.0,remove_non_ascii(new_loc[0]) + " " + remove_non_ascii(new_loc[1]) + "\n" + remove_non_ascii(new_loc[2]) + " " + remove_non_ascii(new_loc[3])+ "\n")
     
 
 def produce_csv(): 
@@ -127,8 +131,10 @@ def load_input_csv(filename):
         
         for row in reader:
             entries += 1
-            in_data.append([row['Business Name'],unicodedata.normalize("NFKD",row['Full Address']), row['Latitude'],row['Longitude']])
-
+            in_data.append([remove_non_ascii(row['Business Name']),remove_non_ascii(row['Full Address']),remove_non_ascii(row['Latitude']),remove_non_ascii(row['Longitude'])])
+        
+        for e in in_data:
+            print(e)
 def wrong_category(): 
 # Handles the event where location is not in the right category.
     global out_data
