@@ -2,27 +2,22 @@
 # Author: Russell Abernethy
 # Date: 05/27/2021
 
-import pyperclip
-import sys
+import pyperclip, sys, selenium.webdriver, csv
 import tkinter as tk
 from tkinter import filedialog
-import selenium.webdriver
 from selenium.webdriver.common.keys import Keys
-import csv
-import subprocess
-import unicodedata
+
 
 start = False
-in_data = []
-out_data = []
-driver = None
-seachbox = '//*[@id="searchboxinput"]'
-filename = ''
-entries = 0
-progress = 0
+driver,filename = None, None
+in_data, out_data = [],[]
+entries, progress = 0,0
+searchbox = '//*[@id="searchboxinput"]'
+
 
 def remove_non_ascii(s):
     return "".join(c for c in s if ord(c)<128)
+
 
 def open_csv(): 
 # Opens file explorer to load csv file.
@@ -37,10 +32,9 @@ def open_csv():
 
 def on_open(): 
 # Opens webbrowser and starts the cleaning tool.
-    global start
-    global driver
-    global filename
+    global start, driver, filename
     if not driver and not start:
+        start = True
         load_input_csv(filename)                                                # Load in all the entires from the input csv.
         driver = selenium.webdriver.Firefox()                                   # Start the webbrowser.
         driver.get('https://www.google.com/maps/')                              # Go to google maps.
@@ -53,7 +47,6 @@ def on_close():
     if driver:                                                                  # If the program has already started to run:
         driver.close()                                                          # Close the webbrowser.
         produce_csv()                                                           # Create csv output files.
-
 
 
 def loc_correct():
@@ -73,31 +66,28 @@ def loc_correct():
     
 def next_loc():
 # Advances the browser to the next entry.
-    global in_data
-    global out_data
-    global driver
-    global seachbox
-    global entries
-    global progress
+    global in_data, out_data, driver, searchbox, entries, progress
     progress += 1
     pbar.delete(1.0,'end')
-
     pbar.insert(3.0,'Progress : {progress}/{entries}'.format(progress=progress,entries=entries))
     try:                                                                        # If there are more locations to check, do so.
         new_loc = in_data.pop()
-        out_data.append(new_loc)
+        out_data.append(new_loc) 
     except IndexError:                                                          # No more places to check, wrap up the program.
         produce_csv()                                                           # Create 2 csvs.
         on_close()                                                              # Call in the cleanup team.
-    driver.find_element_by_xpath(seachbox).clear()                              # Clear seachbox and go to next place to check.
-    driver.find_element_by_xpath(seachbox).send_keys( new_loc[1] + Keys.ENTER)
+    
+    try:                                                                        # If the search box cannot be clicked, go back to a place where there is.
+        driver.find_element_by_xpath(searchbox).clear()                         # Clear seachbox and go to next place to check.
+    except tk.ElementNotInteractableException:
+        driver.get('https://www.google.com/maps/')
+    driver.find_element_by_xpath(searchbox).send_keys( remove_non_ascii(new_loc[1]) + Keys.ENTER)
     pbar.insert(1.0,remove_non_ascii(new_loc[0]) + " " + remove_non_ascii(new_loc[1]) + "\n" + remove_non_ascii(new_loc[2]) + " " + remove_non_ascii(new_loc[3])+ "\n")
     
 
 def produce_csv(): 
 # Produces the output csv
-    global out_data
-    global driver
+    global out_data, driver
     with open(filename[:-4]+'(2).csv','w',newline='') as outcsv:                # Creates detailed report csv. Boring Code.
         headers = ['Business Name', 'Full Address', 'Latitude', 'Longitude', 'NewLatitude', 'NewLongitude', 'Notes']
         writer = csv.DictWriter(outcsv,fieldnames=headers)                      # ──────▄▀▄─────▄▀▄         - Jerry the -
@@ -125,9 +115,7 @@ def produce_csv():
 
 def load_input_csv(filename): 
 # Reads in csv and places data into a list.
-    global in_data
-    global progress
-    global entries
+    global in_data, progress, entries
     with open(filename,'r',newline='\n',encoding='utf8') as f:
         reader = csv.DictReader(f)
         
@@ -140,8 +128,8 @@ def wrong_category():
     global out_data
     if geol.get() == '':
         temp = out_data.pop()
-        temp.append("")                                                             # No lat or long included since we don't really care
-        temp.append("")                                                             # if it's there or not.
+        temp.append("")                                                          # No lat or long included since we don't really care
+        temp.append("")                                                          # if it's there or not.
         temp.append("{notes}".format(notes='Does_not_fall_within_search_category'))
         out_data.append(temp)
         next_loc()                                          
@@ -156,9 +144,9 @@ root  = tk.Tk()                                                                 
 root.title('slfLocate Data Cleaning Tool')
 top=tk.Frame(root)
 top.pack()
-e = tk.Button(top, text='Open csv file', command=open_csv)                     # Open csv button.
+e = tk.Button(top, text='Open csv file', command=open_csv)                      # Open csv button.
 e.pack(side=tk.LEFT)
-b = tk.Button(top, text='Quit', command=on_close)                              # Quit button.
+b = tk.Button(top, text='Quit', command=on_close)                               # Quit button.
 b.pack(side=tk.LEFT)
 b = tk.Button(root, text='Does Not Fall Into Category.', command=wrong_category, bg = 'red') 
 b.pack()                                                                        # Not in category button.
@@ -166,7 +154,7 @@ b = tk.Button(root, text = 'Location is at: ', bg='green',command=loc_correct)  
 b.pack()
 search = tk.Frame(root)
 search.pack()
-geol = tk.Entry(search)                                                           # Text entry for geo cords.
+geol = tk.Entry(search)                                                         # Text entry for geo cords.
 geol.pack(side=tk.LEFT)
 p = tk.Button(search, text='Paste',command=paste)
 p.pack(side=tk.LEFT)
