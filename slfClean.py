@@ -22,9 +22,9 @@ def remove_non_ascii(s):
 def open_csv(): 
 # Opens file explorer to load csv file.
     global filename
-    if filename == '':
+    if filename is None:
         filename = filedialog.askopenfilename()                                 # Open file explorer.
-    if filename != '':                                                          # If a file was selected start open it and 
+    if filename is not None:                                                    # If a file was selected start open it and 
         on_open()                                                               # the browser.
     else:                                                                       # Otherwise print an error to screen.
         print('error opening csv, try again')
