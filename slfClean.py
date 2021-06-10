@@ -12,6 +12,7 @@ import csv
 import subprocess
 import unicodedata
 
+start = False
 in_data = []
 out_data = []
 driver = None
@@ -26,7 +27,8 @@ def remove_non_ascii(s):
 def open_csv(): 
 # Opens file explorer to load csv file.
     global filename
-    filename = filedialog.askopenfilename()                                     # Open file explorer.
+    if filename == '':
+        filename = filedialog.askopenfilename()                                 # Open file explorer.
     if filename != '':                                                          # If a file was selected start open it and 
         on_open()                                                               # the browser.
     else:                                                                       # Otherwise print an error to screen.
@@ -35,9 +37,10 @@ def open_csv():
 
 def on_open(): 
 # Opens webbrowser and starts the cleaning tool.
+    global start
     global driver
     global filename
-    if not driver:
+    if not driver and not start:
         load_input_csv(filename)                                                # Load in all the entires from the input csv.
         driver = selenium.webdriver.Firefox()                                   # Start the webbrowser.
         driver.get('https://www.google.com/maps/')                              # Go to google maps.
