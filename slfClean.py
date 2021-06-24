@@ -56,13 +56,11 @@ def loc_correct():
         data = out_data.pop()                                                   # No need to explain this code so I'll put ASCII here.
         data[0] = data[0] if name_change.get(1.0,tk.END) == '\n' else name_change.get(1.0,tk.END).replace('\n','')
         data[1] = data[1] if adr_change.get(1.0,tk.END) == '\n' else adr_change.get(1.0,tk.END).replace('\n','')
-    
         geo = geol.get().split(',')                                             # ░▄▄▄▄░
         lon = geo.pop()                                                         # ▀▀▄██►
         data.append(geo.pop())                                                  # ▀▀███►
         data.append(lon)                                                        # ░▀███►░█►
         data.append("")                                                         # ▒▄████▀▀
-        print(data)
         out_data.append(data)                                                   # This is Frank the dino, he likes hot sause and doing
         geol.delete(0,len(geol.get()))
         next_loc()                                                              # crossword puzzles in red ink (he's crazy!)
