@@ -2,7 +2,7 @@
 # Author: Russell Abernethy
 # Date: 05/27/2021
 
-import pyperclip, sys, selenium.webdriver, csv
+import pyperclip, sys, selenium, csv
 import tkinter as tk
 from tkinter import filedialog
 from selenium.webdriver.common.keys import Keys
@@ -54,11 +54,15 @@ def loc_correct():
     global out_data
     if geol.get() != '':                                                        # User entered new cords. Save it and go to next location.
         data = out_data.pop()                                                   # No need to explain this code so I'll put ASCII here.
+        data[0] = data[0] if name_change.get(1.0,tk.END) == '\n' else name_change.get(1.0,tk.END).replace('\n','')
+        data[1] = data[1] if adr_change.get(1.0,tk.END) == '\n' else adr_change.get(1.0,tk.END).replace('\n','')
+    
         geo = geol.get().split(',')                                             # ░▄▄▄▄░
         lon = geo.pop()                                                         # ▀▀▄██►
         data.append(geo.pop())                                                  # ▀▀███►
         data.append(lon)                                                        # ░▀███►░█►
         data.append("")                                                         # ▒▄████▀▀
+        print(data)
         out_data.append(data)                                                   # This is Frank the dino, he likes hot sause and doing
         geol.delete(0,len(geol.get()))
         next_loc()                                                              # crossword puzzles in red ink (he's crazy!)
@@ -70,6 +74,8 @@ def next_loc():
     progress += 1
     pbar.delete(1.0,'end')
     pbar.insert(3.0,'Progress : {progress}/{entries}'.format(progress=progress,entries=entries))
+    adr_change.delete(1.0,'end')
+    name_change.delete(1.0,'end')
     try:                                                                        # If there are more locations to check, do so.
         new_loc = in_data.pop()
         out_data.append(new_loc) 
@@ -88,6 +94,7 @@ def next_loc():
 def produce_csv(): 
 # Produces the output csv
     global out_data, driver
+    counter = 0
     with open(filename[:-4]+'(2).csv','w',newline='') as outcsv:                # Creates detailed report csv. Boring Code.
         headers = ['Business Name', 'Full Address', 'Latitude', 'Longitude', 'NewLatitude', 'NewLongitude', 'Notes']
         writer = csv.DictWriter(outcsv,fieldnames=headers)                      # ──────▄▀▄─────▄▀▄         - Jerry the -
@@ -109,8 +116,10 @@ def produce_csv():
             writer.writeheader()
             for row in reader:
                 if row['NewLatitude'] != '':
+                    counter+=1
                     writer.writerow({'Business Name': row['Business Name'], 'Full Address': row['Full Address'], 'Latitude': row['NewLatitude'], 'Longitude': row['NewLongitude']})
     driver.close()
+    print("Cleaned from: {start} --> {end}".format(start = entries, end = counter))
     exit()
 
 def load_input_csv(filename): 
@@ -144,20 +153,49 @@ root  = tk.Tk()                                                                 
 root.title('slfLocate Data Cleaning Tool')
 top=tk.Frame(root)
 top.pack()
+
 e = tk.Button(top, text='Open csv file', command=open_csv)                      # Open csv button.
 e.pack(side=tk.LEFT)
+
 b = tk.Button(top, text='Quit', command=on_close)                               # Quit button.
 b.pack(side=tk.LEFT)
+
 b = tk.Button(root, text='Does Not Fall Into Category.', command=wrong_category, bg = 'red') 
 b.pack()                                                                        # Not in category button.
+
 b = tk.Button(root, text = 'Location is at: ', bg='green',command=loc_correct)  # Correct button.
 b.pack()
+
 search = tk.Frame(root)
 search.pack()
+
 geol = tk.Entry(search)                                                         # Text entry for geo cords.
 geol.pack(side=tk.LEFT)
+
 p = tk.Button(search, text='Paste',command=paste)
 p.pack(side=tk.LEFT)
+
+change_header = tk.Frame(root)
+change_header.pack()
+
+adr_text = tk.Text(change_header,height=1)
+adr_text.insert(tk.INSERT,"Change Address:")
+adr_text.pack(side=tk.RIGHT)
+
+name_text = tk.Text(change_header,height=1)
+name_text.insert(tk.INSERT,"Change Business Name:")
+name_text.pack(side=tk.LEFT)
+
+change = tk.Frame(root)
+change.pack()
+
+adr_change = tk.Text(change,height=3)
+adr_change.pack(side=tk.RIGHT)
+
+name_change = tk.Text(change,height=3)
+name_change.pack(side=tk.LEFT)
+
 pbar = tk.Text(root)                                                            # Progress bar text.
 pbar.pack()
+
 root.mainloop()
