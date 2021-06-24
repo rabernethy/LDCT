@@ -166,33 +166,33 @@ b.pack()                                                                        
 b = tk.Button(root, text = 'Location is at: ', bg='green',command=loc_correct)  # Correct button.
 b.pack()
 
-search = tk.Frame(root)
+search = tk.Frame(root)                                                         # Search Window Frame
 search.pack()
 
 geol = tk.Entry(search)                                                         # Text entry for geo cords.
 geol.pack(side=tk.LEFT)
 
-p = tk.Button(search, text='Paste',command=paste)
+p = tk.Button(search, text='Paste',command=paste)                               # Paste Button
 p.pack(side=tk.LEFT)
 
-change_header = tk.Frame(root)
+change_header = tk.Frame(root)                                                  # Change Window Frame
 change_header.pack()
 
-adr_text = tk.Text(change_header,height=1)
+adr_text = tk.Text(change_header,height=1)                                      # Address Change Text
 adr_text.insert(tk.INSERT,"Change Address:")
 adr_text.pack(side=tk.RIGHT)
 
-name_text = tk.Text(change_header,height=1)
+name_text = tk.Text(change_header,height=1)                                     # Business Name Change Text
 name_text.insert(tk.INSERT,"Change Business Name:")
 name_text.pack(side=tk.LEFT)
 
-change = tk.Frame(root)
+change = tk.Frame(root)                                                         # Change Input Window Frame
 change.pack()
 
-adr_change = tk.Text(change,height=3)
+adr_change = tk.Text(change,height=3)                                           # Address Change Input
 adr_change.pack(side=tk.RIGHT)
 
-name_change = tk.Text(change,height=3)
+name_change = tk.Text(change,height=3)                                          # Business Name Change Input
 name_change.pack(side=tk.LEFT)
 
 pbar = tk.Text(root)                                                            # Progress bar text.
