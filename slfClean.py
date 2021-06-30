@@ -158,7 +158,7 @@ e.pack(side=tk.LEFT)
 b = tk.Button(top, text='Quit', command=on_close)                               # Quit button.
 b.pack(side=tk.LEFT)
 
-b = tk.Button(root, text='Does Not Fall Into Category.', command=wrong_category, bg = 'red') 
+b = tk.Button(root, text='Does Not Fall Into Category', command=wrong_category, bg = 'red') 
 b.pack()                                                                        # Not in category button.
 
 b = tk.Button(root, text = 'Location is at: ', bg='green',command=loc_correct)  # Correct button.
