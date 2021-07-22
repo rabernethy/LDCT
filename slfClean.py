@@ -115,7 +115,7 @@ def produce_csv():
             for row in reader:
                 if row['NewLatitude'] != '':
                     counter+=1
-                    writer.writerow({'Business Name': row['Business Name'], 'Full Address': row['Full Address'], 'Latitude': row['NewLatitude'], 'Longitude': row['NewLongitude']})
+                    writer.writerow({'Business Name': row['Business Name'].replace('"',""), 'Full Address': row['Full Address'].replace('"',""), 'Latitude': row['NewLatitude'].replace('"',""), 'Longitude': row['NewLongitude'].replace('"',"")})
     driver.close()
     print("Cleaned from: {start} --> {end}".format(start = entries, end = counter))
     exit()
