@@ -1,79 +1,32 @@
-# slfClean.py
-![dashexample](/img/pic3.png)
-## Requirements and How to install:
+# LDCT - Location Data Cleaning Tool
 
-### Installing Git:
-Git is a version manager for code development. It is also a useful tool for distributing the latest version of a project. Follow the instructions for your specific system to install.
+## Written By Russell Abernethy
 
-#### **MacOS:**
-Homebrew is a tool used to install pacakages on your computer, install it to install git.
-Open up terminal and enter:
-```shell
-$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-Then use Homebrew to install git
-```shell
-$ brew install git
-```
+## Purpose
 
-#### **Linux**
-```shell
-$ apt-get install git
-```
+This tool is intended to take csv's of scraped location data and uses google maps to allow the user to 
 
-#### **Windows**
-Go to the Git [download](https://git-scm.com/download/win) page and download for your version of windows.
+### Requirements
 
-### Installing Firefox:
-If you don't already, please go to the [download](https://www.mozilla.org/en-US/firefox/new/) page for Firefox and install the latest version of the browser.
+* Chrome v95
+* Python3 or >
 
-### Installing Python:
-Go to the [download](https://www.python.org/downloads/) page for python and follow the install instructions for your system
+### Installing
 
-### Installing Pip:
-Pip is a tool for downloading code packages that normally comes preinstalled with most python distributions. If for some reason your version did not come with it already, you'll have to install it as we need a package or 2 for this program to work.
+If you are on windows, you can double click the installer.py script or run it from the command line
 
-#### **MacOS & Linux**
-```shell
-$ python3 -m ensurepip --upgrade
+If you are using linux / macOS open the terminal and type:
+
+``` zsh
+> python3 installer.py
 ```
 
-#### **Windows**
-Open up the cmd promt and enter:
-```powershell
-C:> py -m ensurepip --upgrade
-```
+# Running:
 
-### Installing Dependences:
-First, you need to download the entire project from github. This can be done by entering the following in terminal:
-```shell
-$ git clone https://github.com/rabernethy/slfLocateCleaningTool.git
-```
-Then navigate to that folder and open a terminal there and download the dependencies by running the following command:
-```shell
-$ cd slfLocateCleaningTool/
-$ pip3 install -r requirements.txt
-```
+Windows: double click clean.py or run it from the command line
 
-### Installing GeckoDriver:
-#### Windows 
-To be able to interact with a web browser, we need to download an extra driver. Go to the geckodriver [download](https://github.com/mozilla/geckodriver/releases) page and download the correct version for your system. Once you've downloaded the zipfile, unzip it and copy the .exe file into your python parent directory (e.g. C:\\Python39). The best way I've found to get here is to open file explorer and search for Python39 in your C drive and wait until it finds it.
-#### **MacOS**
-To be able to interact with a web browser, we need to download an extra driver. Go to the geckodriver [download](https://github.com/mozilla/geckodriver/releases) page and download the correct version for your system. Once you've downloaded the zipfile, unzip it and place the exe in /usr/local/bin. You can get here by opening finder, going up to the go drop down and clicking 'Go to Folder' and then typing in the path '/usr/local/bin'. Fingers crossed everything should be ready now for the software to work!
+If you are using linux / MacOS, open the terminal and type:
 
-## How to run:
-#### **MacOS & Linux**
-Open terminal at the slfLocateCleaningTool folder(right click and select New Terminal at Folder) and enter
-``` shell
-$ python3 slfClean.py
+``` zsh
+> python3 clean.py
 ```
-
-#### **Windows**
-Double click on the slfClean file to run.
-
-## Downloading Updates:
-The plan is to keep this program is to add requested features. This means that new versions of the code will be pushed out that you should download. How this is done is using git. To downoald updates, run:
-```shell
-$ git pull
-```
-I would suggest doing this every week until changes are finished being made.
