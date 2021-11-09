@@ -161,10 +161,12 @@ def wrong_category():
         out_data.append(temp)
         next_loc()                                          
 
+
 def paste():
 # Button for pasting from the clipboard.
     if pyperclip.paste() != '':
         geol.insert(0,pyperclip.paste())
+
 
 # Widget Creation
 root  = tk.Tk()                                                                 # Create the widget box.
